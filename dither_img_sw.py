@@ -41,26 +41,25 @@ def dither_img(img_array, dither_array):
     
 #####################################START
 
-img_path = sys.argv[1]
-img_array = load_img_into_array(img_path)
-dither_array = numpy.array([[0,7,3],[6,5,2],[4,1,8]])
+if __name__ == '__main__':
+    img_path = sys.argv[1]
+    img_array = load_img_into_array(img_path)
+    dither_array = numpy.array([[0,7,3],[6,5,2],[4,1,8]])
 
-ord_array = convert_rgb_sw(img_array)
-dithered_img_array = dither_img(ord_array, dither_array)
+    ord_array = convert_rgb_sw(img_array)
+    dithered_img_array = dither_img(ord_array, dither_array)
 
-dithered_img_array.shape = -1
-img_data = (pyglet.gl.GLubyte * dithered_img_array.size)(*dithered_img_array.astype('uint8'))
-rendered_img = pyglet.image.ImageData(img_width,img_height,"I",img_data,pitch=img_width)
-myspr = pyglet.sprite.Sprite(rendered_img)
+    dithered_img_array.shape = -1
+    img_data = (pyglet.gl.GLubyte * dithered_img_array.size)(*dithered_img_array.astype('uint8'))
+    rendered_img = pyglet.image.ImageData(img_width,img_height,"I",img_data,pitch=img_width)
+    myspr = pyglet.sprite.Sprite(rendered_img)
 
-window = pyglet.window.Window(width=400,height=400,resizable=True,caption='Beispiel zum Anzeigen von Images')
-
-#Funktion die beim Zeichnen des Fensters ausgefuehrt wird
-@window.event
-def on_draw():
-   window.clear()
-   #myspr.update(x=0, y=0, rotation=None, scale=0.25, scale_x=None, scale_y=None)
-   myspr.draw()
-
-#Start der Ausfuehrung des Fensters
-pyglet.app.run()
+    window = pyglet.window.Window(width=400,height=400,resizable=True,caption='Beispiel zum Anzeigen von Images')
+    
+    @window.event
+    def on_draw():
+       window.clear()
+       #myspr.update(x=0, y=0, rotation=None, scale=0.25, scale_x=None, scale_y=None)
+       myspr.draw()
+    
+    pyglet.app.run()
