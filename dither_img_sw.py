@@ -1,3 +1,5 @@
+#python2.7 utf8
+
 import pyglet
 import numpy
 import sys
@@ -31,12 +33,12 @@ def convert_rgb_sw(img_array):
 
 def dither_img(img_array, dither_array):
     new_image_array = numpy.full((img_height, img_width), 0)
-    for row in range(0, img_height, 3):
-        for column in range(0, img_width, 3):
+    for row in range(0, img_height-3, 3):
+        for column in range(0, img_width-3, 3):
             for dither_row in range (0, 3):
                 for dither_column in range (0, 3):
-                    if (img_array[row][column]//25)-1 > dither_array[dither_row][dither_column]:
-                        new_image_array[row][column]=255
+                    if (img_array[row+dither_row][column+dither_column]//25)-1 > dither_array[dither_row][dither_column]:
+                        new_image_array[row+dither_row][column+dither_column]=255
     return new_image_array
     
 #####################################START
@@ -54,12 +56,11 @@ if __name__ == '__main__':
     rendered_img = pyglet.image.ImageData(img_width,img_height,"I",img_data,pitch=img_width)
     myspr = pyglet.sprite.Sprite(rendered_img)
 
-    window = pyglet.window.Window(width=400,height=400,resizable=True,caption='Beispiel zum Anzeigen von Images')
+    window = pyglet.window.Window(width=400,height=400,resizable=True,caption='dithered image')
     
     @window.event
     def on_draw():
        window.clear()
-       #myspr.update(x=0, y=0, rotation=None, scale=0.25, scale_x=None, scale_y=None)
        myspr.draw()
     
     pyglet.app.run()
