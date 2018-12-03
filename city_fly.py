@@ -2,6 +2,9 @@ import random
 import numpy
 import pyglet
 
+global end_prog
+end_prog = False
+
 def create_random_boxes(max_x, max_y, number):
     px_1 = random.randint(0, max_x)
     py_1 = random.randint(0, max_y)
@@ -19,6 +22,14 @@ def move_forward(box):
     new_object = fw + box
     return new_object
 
+def movealong(delta):
+    global new_pos
+    new_pos = new_pos + delta/5
+    if(new_pos > 2):
+        new_pos = new_pos - 2 
+        end_prog = True
+        
+
 if __name__ == "__main__":  
     new_pos = 1.0
     # definition boxes
@@ -30,32 +41,19 @@ if __name__ == "__main__":
     
     window = pyglet.window.Window(width=400,height=400,resizable=True,caption='Beispiel zu Transformationen')
 
-    while True:
-        try:
-            @window.event
-            def on_draw():
-                # set bg-color
-                pyglet.gl.glClearColor(*background_color)
-                window.clear()
+    while end_prog == False:
+        @window.event
+        def on_draw():
+            # set bg-color
+            pyglet.gl.glClearColor(*background_color)
+            window.clear()
 
-                pyglet.gl.glColor3f(*drawing_color1)
-                #pyglet.graphics.draw(1, pyglet.gl.GL_POINTS,('v2i',(100,100+int(100*new_pos))))
-                moved_box_1 = move_forward(box_one)
-                moved_box_2 = move_forward(box_two)
-                create_box(moved_box_1)
-                create_box(moved_box_2)
-        
-
-            def movealong(delta):
-                global new_pos
-                new_pos = new_pos + delta/5
-                if(new_pos > 2):
-                    new_pos = new_pos - 2 
-
-            pyglet.clock.schedule(movealong)
-            pyglet.app.run()
-        
-        except KeyboardInterrupt:
-            break
-
+            pyglet.gl.glColor3f(*drawing_color1)
+            moved_box_1 = move_forward(box_one)
+            moved_box_2 = move_forward(box_two)
+            create_box(moved_box_1)
+            create_box(moved_box_2)
+    
+        pyglet.clock.schedule(movealong)
+        pyglet.app.run()
     
