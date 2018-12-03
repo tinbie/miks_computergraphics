@@ -1,9 +1,7 @@
 import random
 import numpy
 import pyglet
-
-global end_prog
-end_prog = False
+from time import sleep
 
 window = pyglet.window.Window(width=400,height=400,resizable=True,caption='Beispiel zu Transformationen')
 
@@ -20,16 +18,15 @@ def create_box(array_box):
     pyglet.gl.glEnd()
 
 def move_forward(box):
-    fw = numpy.array([[0, 100*new_pos],[0, 100*new_pos],[0, 100*new_pos],[0, 100*new_pos]])
+    fw = numpy.array([[0, -100*new_pos],[0, -100*new_pos],[0, -100*new_pos],[0, -100*new_pos]])
     new_object = fw + box
     return new_object
 
 def movealong(delta):
     global new_pos
     new_pos = new_pos + delta/5
-    if(new_pos > 2):
-        new_pos = new_pos - 2 
-        end_prog = True
+    #if(new_pos % 1 == 0):
+    #    sleep(2)
 
 @window.event
 def on_draw():
@@ -37,16 +34,17 @@ def on_draw():
     pyglet.gl.glClearColor(*background_color)
     window.clear()
     pyglet.gl.glColor3f(*drawing_color1)
-    moved_box_1 = move_forward(box_one)
-    moved_box_2 = move_forward(box_two)
-    create_box(moved_box_1)
-    create_box(moved_box_2)
+
+    create_box(move_forward(box_one))
+    create_box(move_forward(box_two))
+    create_box(move_forward(box_three))
         
 if __name__ == "__main__":  
     new_pos = 1.0
     # definition boxes
     box_one = numpy.array([[100, 100], [150, 100], [150, 150], [100, 150]])
     box_two = numpy.array([[200, 200], [250, 200], [250, 250], [200, 250]])
+    box_three = numpy.array([[150, 500], [250, 500], [250, 600], [150, 600]])
 
     background_color = (0, 0, 0, 1)
     drawing_color1 = (1, 1, 1)
