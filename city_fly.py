@@ -17,9 +17,24 @@ def create_objects():
     pyglet.gl.glVertex2f(200,250)
     pyglet.gl.glEnd()
 
-def move_up():
-    global pos<
+    pyglet.gl.glBegin(pyglet.gl.GL_LINE_STRIP)
+    pyglet.gl.glVertex2f(200,0)
+    pyglet.gl.glVertex2f(200,300)
+    pyglet.gl.glVertex2f(100,300)
+    pyglet.gl.glEnd()
+
+    pyglet.gl.glColor3f(1,0,0)
+    pyglet.gl.glBegin(pyglet.gl.GL_TRIANGLES)
+    pyglet.gl.glVertex2i(200,int(200+new_pos*10))
+    pyglet.gl.glVertex2i(190,int(180+new_pos*10))
+    pyglet.gl.glVertex2i(210,int(180+new_pos*10))
+    pyglet.gl.glEnd()
+
+def check_way():
     pass
+
+def rotate(angle):
+    
 
 def movealong(delta):
     global new_pos
